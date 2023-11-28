@@ -1,29 +1,35 @@
 #!/bin/bash
 
-# Создаю сессию "work_session" и окно "project1"; После создания отключаюсь от сессии
-tmux new-session -s work_session -n project1 -d
+# Имя сессии
+name_session=work_session
 
-# Изменяю текущий каталог для созданной сессии; Сочетание C-m означает "Enter"
-#tmux send-keys -t work_session 'cd ~/Projects/Makefile' C-m
+# Имя окна
+name_window=project
+
+# Путь до проекта
+path=~/Projects/Makefile
+
+# Путь до макета
+path_layout=~/.tmux/layouts/layout_1_3_pan
+
+# Создаю сессию и окно; После создания отключаюсь от сессии
+tmux new-session -s $name_session -n $name_window -d
 
 # Создаю три панели
-tmux split-window -v -t work_session
-tmux split-window -v -t work_session
+for i in {1..2}
+do
+  tmux split-window -v -t work_session
+done
 
 # Применяю свой макет расположения панелей
-tmux select-layout "$(cat ~/.tmux/layouts/layout_1_3_pan)"
+tmux select-layout "$(cat $path_layout)"
 
+# Устанавливаю во всех панелях путь до проекта
+for i in {1..3}
+do
+  tmux send-keys -t work_session:1.$i "cd $path" C-m
+done
 
-# Подключаюсь к сессии "work_session"
-#tmux attach -t work_session
-#tmux attach-session -t work_session 'cd ~/Projects/Makefile' C-m
-tmux attach-session -t work_session -c ~/Projects/Makefile
-# Открываю vim в сессии "work_session"
-#tmux send-keys -t work_session 'vim' C-m
-
-# Создаю ниже горизонтальное окно
-#tmux split-window -v -t work_session
-
-# Подключаюсь к сессии "work_session"
-#tmux attach -t work_session
+# Вывожу сессию на экран
+tmux attach -t work_session
 
