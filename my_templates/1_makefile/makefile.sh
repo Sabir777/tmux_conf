@@ -18,7 +18,7 @@ tmux new-session -s $name_session -n $name_window -d
 # Создаю три панели
 for i in {1..2}
 do
-  tmux split-window -v -t work_session
+  tmux split-window -v -t $name_session
 done
 
 # Применяю свой макет расположения панелей
