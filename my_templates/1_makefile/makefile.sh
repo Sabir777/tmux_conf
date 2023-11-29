@@ -27,8 +27,18 @@ tmux select-layout "$(cat $path_layout)"
 # Устанавливаю во всех панелях путь до проекта
 for i in {1..3}
 do
-  tmux send-keys -t work_session:1.$i "cd $path" C-m
+  tmux send-keys -t $name_session:1.$i "cd $path" C-m
 done
+
+# Перехожу в папку с исходными файлами в первой панели
+tmux send-keys -t $name_session:1.1 'cd src' C-m
+
+# Открываю все файлы в виде вкладок
+tmux send-keys -t $name_session:1.1 'vim *.h *.cpp' C-m
+tmux send-keys -t $name_session:1.1 ':tab all' C-m
+
+# Фокусируюсь на первой панели, в которой были открыты вкладки
+tmux select-pane -t $name_session:1.1 
 
 # Вывожу сессию на экран
 tmux attach -t work_session
